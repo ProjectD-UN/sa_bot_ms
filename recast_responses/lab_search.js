@@ -18,8 +18,6 @@ const lab_search = (docs, city) => {
         }]
     }))
 
-    console.log(cards)
-
     return [
         {
             type: 'text',

@@ -30,8 +30,7 @@ const labSchema = new mongoose.Schema({
 const Labs = mongoose.model('labs',labSchema, 'toxlabs')
 
 router.post('/search', async (req, res) => {    
-    const city = req.body.city.split(",")[0]
-    // console.log(city)      
+    const city = req.body.city.split(",")[0]    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)
     await res.json({
