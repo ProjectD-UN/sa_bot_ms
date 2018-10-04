@@ -1,0 +1,103 @@
+#Test with: http://editor.swagger.io/
+
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Microservice for ChatBot
+  description: Node.js + MongoDB + Recast.AI
+  license:
+    name: Software Architecture 2018-II
+host: 192.168.99.101:3000
+basePath: /api/labs
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /search:
+    post:
+      summary: Retrives labs given a city in the body in the shape of interactive cards.
+      operationId: getLabsByCity
+      parameters:
+        - name: location
+          in: body
+          required: true
+          description: String
+          schema:
+            $ref: '#/definitions/City'
+      responses:
+        '200':
+          description: Founded
+          schema:
+            $ref: '#/definitions/LabCard'
+        '201':
+          description: Not founded
+          schema:
+            $ref: '#/definitions/LabCardMissed'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+  
+  
+definitions:
+
+  # Courses
+  City:
+    type: object
+    properties:
+      city:
+        type: string
+  
+  LabCard:
+    type: object
+    properties:
+      title:
+        type: string
+      subtitle:
+        type: string
+      buttons:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+            title: 
+              type: string
+            value:
+              type: string
+              
+  LabCardMissed:
+    type: object
+    properties:
+      title:
+        type: string
+      buttons:
+        type: array
+        items:
+          type: object
+          properties:
+            type:
+              type: string
+            title: 
+              type: string
+            value:
+              type: string
+
+  
+# Errors
+  ErrorModel:
+    type: object
+    required:
+      - message
+      - code
+    properties:
+      message:
+        type: string
+      code:
+        type: number
+      description:
+        type: object
