@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use('/api/labs', labs);
 
-mongoose.connect('mongodb://localhost:27017/national-toxlabs', {useNewUrlParser: true})
+mongoose.connect('mongodb://sa_bot_db/national-toxlabs', {useNewUrlParser: true})
     .then(() => console.log('Connected to database ...'))
     .catch((error) => console.log('Could not connect to database'))
 
