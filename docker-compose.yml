@@ -1,0 +1,16 @@
+version: '2.1'
+services:
+  sa_bot_db:
+    image: mongo
+    command: mongo --smallfiles
+    ports:
+      - 27017:27017
+  
+  sa_bot_db_seed:
+    image: mongo
+    links:
+      - sa_bot_db
+    volumes:
+      - ./db_seed:/data/db_seed
+    command:
+      /db_seed/import.sh
