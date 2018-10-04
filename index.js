@@ -1,45 +1,16 @@
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const discoverLabs = require('./exports/discoverLabs.js')
+const labs = require('./routes/labs');
 
-const db_url = 'mongodb://localhost:27017/national-toxlabs';
-const db_coll = 'toxlabs';
-const PORT = 3000
+const app = express();
+app.use(bodyParser.json());
+app.use('/api/labs', labs);
 
-const app = express()
-app.use(bodyParser.json())
+mongoose.connect('mongodb://localhost:27017/national-toxlabs', {useNewUrlParser: true})
+    .then(() => console.log('Connected to database ...'))
+    .catch((error) => console.log('Could not connect to database'))
 
-const findRecords = (city) => {
-    var collection = db.collection(db_coll)
-    collection.find({Ciudad: city}).toArray((error, docs) => {
-        if (error) return process.exit(1)     
-        console.log('Found records')   
-        var results = discoverLabs(docs, city)
-        res.json({
-            replies: results
-        })
-    })
-}
+const port = process.env.PORT || 3000
 
-
-app.post('/labs', (req, res) => {
-    var city = req.body.conversation.memory.location.formatted.split(",")[0]
-    var collection = db.collection(db_coll)
-    collection.find({Ciudad: city}).toArray((error, docs) => {
-        if (error) return process.exit(1)     
-        console.log('Found records')   
-        var results = discoverLabs(docs, city)
-        res.json({
-            replies: results
-        })
-    })
-})
-
-var db
-MongoClient.connect(db_url, {useNewUrlParser:true}, (error, client) => {
-    if (error) return process.exit(1)
-    db = client.db()
-    console.log(`Started server succesfully on port ${PORT}`)
-    app.listen(PORT)
-})
+app.listen(port, () => console.log(`Listening on port ${port} ...`));
