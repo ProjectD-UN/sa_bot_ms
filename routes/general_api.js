@@ -29,7 +29,7 @@ const labSchema = new mongoose.Schema({
 
 const Labs = mongoose.model('labs',labSchema, 'toxlabs')
 
-router.post('/search', async (req, res) => {    
+router.post('/labs/search', async (req, res) => {    
     const city = req.body.city.split(",")[0]    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)
@@ -38,4 +38,31 @@ router.post('/search', async (req, res) => {
     })
 })
 
+const questionSchema = new mongoose.Schema({
+    type: String,
+    email: String,
+    question: String
+})
+
+const Questions = mongoose.model('quest', questionSchema)
+
+router.post('/questions', async (req, res) => {
+    
+    const question = new Questions({
+        type: req.body.type,
+        email: req.body.email,
+        question: req.body.question
+    })
+
+    await question.save()
+        .then(() => {
+            console.log('saved document')
+            res.json({
+                replies: [{
+                    type: 'text',
+                    content: `Tu pregunta fue guardada exitosamente`
+                }]
+            })
+        })
+})
 module.exports = router

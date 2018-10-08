@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const labs = require('./routes/labs');
+const api = require('./routes/general_api');
 const startServer = require('./mongo_connection/starting_mongo');
 
 const app = express();
 app.use(bodyParser.json());
-app.use('/api/labs', labs);
+app.use('/api', api);
 
 
   
