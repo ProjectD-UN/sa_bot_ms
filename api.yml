@@ -8,7 +8,7 @@ info:
   license:
     name: Software Architecture 2018-II
 host: 192.168.99.101:3000
-basePath: /api/labs
+basePath: /api
 schemes:
   - http
 consumes:
@@ -16,12 +16,12 @@ consumes:
 produces:
   - application/json
 paths:
-  /search:
+  /labs/search:
     post:
       summary: Retrives labs given a city in the body in the shape of interactive cards.
       operationId: getLabsByCity
       parameters:
-        - name: location
+        - name: city
           in: body
           required: true
           description: String
@@ -40,6 +40,27 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/ErrorModel'
+  /questions:
+    post:
+      summary: Saves a question given the name, email and question of the person who made it.
+      operationId: postQuestion
+      parameters:
+        - name: fullQuestion
+          in: body
+          required: true
+          description: Object
+          schema:
+            $ref: '#/definitions/Question'
+      responses:
+        '200':
+          description: Created
+          schema:
+            $ref: '#/definitions/QuestionCreated'
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ErrorModel'
+      
   
   
 definitions:
@@ -87,6 +108,23 @@ definitions:
             value:
               type: string
 
+  Question:
+    type: object
+    properties:
+      type:
+        type: string
+      question:
+        type: string
+      email:
+        type: string
+  
+  QuestionCreated:
+    type: object
+    properties:
+      type:
+        type: string
+      content:
+        type: string
   
 # Errors
   ErrorModel:
