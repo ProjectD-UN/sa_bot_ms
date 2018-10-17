@@ -1,3 +1,6 @@
+// Coded by Diego Rodriguez Chaparro
+// Universidad Nacional de Colombia - 2018
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const api = require('./routes/general_api');
