@@ -1,5 +1,3 @@
-FROM mongo
-
 FROM node:8
 ADD package*.json /tmp/
 RUN cd /tmp && npm install

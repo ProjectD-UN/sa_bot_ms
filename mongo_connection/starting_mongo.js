@@ -13,13 +13,15 @@ const options = {
 
 
 const startingMongoDB = () => {    
-    mongoose.connect("mongodb://localhost:27017/national-toxlabs", options).then(() => {
-        console.log('Connected to database ...')
-    }).catch(err => {
-        console.log('Could not connect to database, retry after 5 seconds.')
+    mongoose.connect("mongodb://sa_bot_db:27017/national-toxlabs",options,(err) => {
+        if(err) {
+            console.log('not connected')
+            setTimeout(startingMongoDB, 5000)
+        } else {
+            console.log('Connected!')
+        }
+    })
         
-        setTimeout(connectWithRetry, 5000)
-    })    
 }
 
 module.exports = startingMongoDB;

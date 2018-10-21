@@ -35,7 +35,8 @@ router.post('/labs/search', async (req, res) => {
     if(count == 0) {
         console.log('load files to toxlabs')
         const fs = require('fs')
-        await Labs.insertMany(JSON.parse(fs.readFileSync('./national-toxlabs.json')))
+        const path = require('path')
+        await Labs.insertMany(JSON.parse(await fs.readFileSync(path.join(__dirname, 'national-toxlabs.json'))))
         console.log('Done loading results')
         var c = await Labs.countDocuments({}, (err, count) => {return count})
         console.log('Number of results: ' + c)
