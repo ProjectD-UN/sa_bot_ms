@@ -29,7 +29,17 @@ const labSchema = new mongoose.Schema({
 
 const Labs = mongoose.model('labs',labSchema, 'toxlabs')
 
-router.post('/labs/search', async (req, res) => {    
+router.post('/labs/search', async (req, res) => {
+    
+    var count = await Labs.countDocuments({}, (err, count) => { return count})
+    if(count == 0) {
+        console.log('load files to toxlabs')
+        const fs = require('fs')
+        await Labs.insertMany(JSON.parse(fs.readFileSync('./national-toxlabs.json')))
+        console.log('Done loading results')
+        var c = await Labs.countDocuments({}, (err, count) => {return count})
+        console.log('Number of results: ' + c)
+    }
     const city = req.body.city.split(",")[0]    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)

@@ -1,19 +1,13 @@
-version: '2.1'
+version: '2'
 services:
   sa_bot_db:
     image: mongo  
-    restart: always  
+    restart: always
     ports:
       - 27017:27017
-  
-  db_seed:
-    build: ./data/db_seed
-    links:
-      - sa_bot_db
-  
   sa_bot_ms:
     build: .
-    restart: always
+    restart: always    
     ports:
       - "3000:3000"
     links:
