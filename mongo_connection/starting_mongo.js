@@ -13,7 +13,7 @@ const options = {
 
 
 const startingMongoDB = () => {    
-    mongoose.connect("mongodb://sa_bot_db:27017/national-toxlabs",options,(err) => {
+    mongoose.connect("mongodb://sa-bot-db:27017/national-toxlabs",options,(err) => {
         if(err) {
             console.log('not connected')
             setTimeout(startingMongoDB, 5000)
