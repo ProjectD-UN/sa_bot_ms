@@ -11,34 +11,15 @@ const options = {
     useNewUrlParser: true
 }
 
-checkDatabase = () => {
-    mongoose.connect("mongodb://localhost:27017/national-toxlabs", options);
-
-    mongoose.connection.on('connected', () => {
-        console.log('Connected to national-toxlabs')
-    })
-
-    
-    mongoose.connection.on('error', () => {
-        console.log('Not connected yet...Hold on')
-    })
-
-    mongoose.connection.on('disconnected', () => {
-        console.log('Disconnected from national-toxlabs')
-    })
-}
-
-
 
 const startingMongoDB = () => {    
-    // mongoose.connect("mongodb://localhost:27017/national-toxlabs", options).then(() => {
-    //     console.log('Connected to database ...')
-    // }).catch(err => {
-    //     console.log('Could not connect to database, retry after 5 seconds.')
+    mongoose.connect("mongodb://localhost:27017/national-toxlabs", options).then(() => {
+        console.log('Connected to database ...')
+    }).catch(err => {
+        console.log('Could not connect to database, retry after 5 seconds.')
         
-    //     setTimeout(connectWithRetry, 5000)
-    // })
-    checkDatabase()
+        setTimeout(connectWithRetry, 5000)
+    })    
 }
 
 module.exports = startingMongoDB;
