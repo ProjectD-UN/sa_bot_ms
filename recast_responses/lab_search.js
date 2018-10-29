@@ -18,13 +18,6 @@ const lab_search = (docs, city) => {
         }]
     }))
 
-    return [
-        {
-            type: 'text',
-            content: `Estos fueron los laboratorios que encontre en ${city}`
-        },
-        { type: 'carousel', content: cards}
-    ]
-}
+    return [{ type: 'carousel', content: cards}]}
 
 module.exports = lab_search;
