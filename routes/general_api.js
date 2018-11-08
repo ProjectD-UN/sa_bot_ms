@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const lab_search = require('../recast_responses/lab_search');
+const request = require('request');
 
 const router = express.Router();
 
@@ -41,11 +42,34 @@ router.post('/labs/search', async (req, res) => {
         var c = await Labs.countDocuments({}, (err, count) => {return count})
         console.log('Number of results: ' + c)
     }
-    const city = req.body.city.split(",")[0]    
+    console.log(req.body)
+    const city = req.body.city.split(",")[0]
+    const conversation_id = req.body.id;    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)
     await res.json({
-        replies: reply
+         replies: [{
+            type: 'text',
+            content: `Esto fue lo que encontre.`
+        }]
+    })
+    
+    var headers = {
+        'Content-Type' : 'application/json',
+        'Authorization' : 'Token bc6a6c225d77a9e9a27d173f4458b4bb'
+    }
+
+    var options = {
+        url: `https://api.recast.ai/connect/v1/conversations/${conversation_id}/messages`,
+        method: 'POST',
+        headers: headers,
+        form: {'messages': reply}
+    }
+
+    request(options, (error, res, body) => {
+        if (!error && res.statusCode == 201){
+            console.log('Made it')
+        }
     })
 })
 
@@ -64,16 +88,28 @@ router.post('/questions', async (req, res) => {
         email: req.body.email,
         question: req.body.question
     })
-
+    var conversation_id = req.body.id;
+    console.log(req.body)
     await question.save()
         .then(() => {
-            console.log('saved document')
-            res.json({
-                replies: [{
-                    type: 'text',
-                    content: `Tu pregunta fue guardada exitosamente`
-                }]
-            })
+            console.log('Saved Question in DB!')
+            var headers = {
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Token bc6a6c225d77a9e9a27d173f4458b4bb'
+            }
+        
+            var options = {
+                url: `https://api.recast.ai/connect/v1/conversations/${conversation_id}/messages`,
+                method: 'POST',
+                headers: headers,
+                form: {'messages': [{ type: 'text', content: `Tu pregunta fue guardada exitosamente !`}]}
+            }
+        
+            request(options, (error, res, body) => {
+                if (!error && res.statusCode == 201){
+                    console.log('Made it')
+                }
+            })            
         })
 })
 module.exports = router
