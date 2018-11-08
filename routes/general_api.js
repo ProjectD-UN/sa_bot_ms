@@ -47,12 +47,12 @@ router.post('/labs/search', async (req, res) => {
     const conversation_id = req.body.id;    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)
-    await res.json({
-         replies: [{
-            type: 'text',
-            content: `Esto fue lo que encontre.`
-        }]
-    })
+    // await res.json({
+    //      replies: [{
+    //         type: 'text',
+    //         content: `Esto fue lo que encontre.`
+    //     }]
+    // })
     
     var headers = {
         'Content-Type' : 'application/json',
