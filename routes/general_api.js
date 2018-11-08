@@ -43,16 +43,17 @@ router.post('/labs/search', async (req, res) => {
         console.log('Number of results: ' + c)
     }
     console.log(req.body)
+
     const city = req.body.city.split(",")[0]
     const conversation_id = req.body.id;    
     const docs = await Labs.find({ciudad: city}).select({nombre: 1, direccion: 1, telefono: 1})
     const reply = lab_search(docs, city)
-    // await res.json({
-    //      replies: [{
-    //         type: 'text',
-    //         content: `Esto fue lo que encontre.`
-    //     }]
-    // })
+    await res.json({
+         replies: [{
+            type: 'text',
+            content: `Esto fue lo que encontre.`
+        }]
+    })
     
     var headers = {
         'Content-Type' : 'application/json',
@@ -82,7 +83,7 @@ const questionSchema = new mongoose.Schema({
 const Questions = mongoose.model('quest', questionSchema)
 
 router.post('/questions', async (req, res) => {
-    
+    res.end();
     const question = new Questions({
         type: req.body.type,
         email: req.body.email,
