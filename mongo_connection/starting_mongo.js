@@ -13,14 +13,14 @@ const options = {
 
 
 const startingMongoDB = () => {    
-    const adress = process.env.DOCKER_DEPLOY? 'sa-user-db': '127.0.0.1';    
+    const adress = process.env.DOCKER_DEPLOY? 'sa-bot-db': '127.0.0.1';    
     const database = process.env.DATABASE? process.env.DATABASE:'27017';
-    mongoose.connect(`mongodb://${adress}:${database}/users`, options, (err) => {
+    mongoose.connect(`mongodb://${adress}:${database}/toxlabs`, options, (err) => {
         if(err) {
-            console.log('not connected')
+            console.log('Not connected to toxlabs')
             setTimeout(startingMongoDB, 5000)
         } else {
-            console.log('Connected!')
+            console.log('Connected to toxlabs!')
         }
     })
         
