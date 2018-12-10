@@ -13,8 +13,9 @@ const options = {
 
 
 const startingMongoDB = () => {    
-    mongoose.connect("mongodb://sa-bot-db:27017/national-toxlabs",options,(err) => {
-    //mongoose.connect("mongodb://127.0.0.1:27017/national-toxlabs",options,(err) => {
+    const adress = process.env.DOCKER_DEPLOY? 'sa-user-db': '127.0.0.1';    
+    const database = process.env.DATABASE? process.env.DATABASE:'27017';
+    mongoose.connect(`mongodb://${adress}:${database}/users`, options, (err) => {
         if(err) {
             console.log('not connected')
             setTimeout(startingMongoDB, 5000)
